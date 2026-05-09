@@ -58,22 +58,40 @@ export default function VerifierDashboard() {
         verifiedBy: userData.id
       });
 
-      // 2. If Approved, award XP and CO2
+      // 2. If Approved, award XP, CO2, and update Daily Task progress
       if (status === 'approved') {
         const userRef = doc(db, 'users', action.userId);
         const userSnap = await getDoc(userRef);
         
-        let newXP = action.co2;
         if (userSnap.exists()) {
-          newXP += (userSnap.data().xp || 0);
-        }
-        const newLevel = newXP >= 1500 ? 3 : newXP >= 500 ? 2 : 1;
+          const uData = userSnap.data();
+          let xpToAward = action.co2; // Activity XP
+          
+          // Process Daily Tasks
+          let updatedTasks = [...(uData.dailyTasks || [])];
+          updatedTasks = updatedTasks.map(task => {
+            if (!task.completed && task.type === action.type) {
+              task.progress += (action.distance || 1);
+              if (task.progress >= task.target) {
+                task.progress = task.target;
+                task.completed = true;
+                xpToAward += task.reward; // Task Completion Reward
+              }
+            }
+            return task;
+          });
 
-        await updateDoc(userRef, {
-          xp: increment(action.co2),
-          co2Saved: increment(action.co2),
-          level: newLevel
-        });
+          const currentXP = uData.xp || 0;
+          const newXP = currentXP + xpToAward;
+          const newLevel = newXP >= 1500 ? 3 : newXP >= 500 ? 2 : 1;
+
+          await updateDoc(userRef, {
+            xp: increment(xpToAward),
+            co2Saved: increment(action.co2),
+            level: newLevel,
+            dailyTasks: updatedTasks
+          });
+        }
       }
 
       // 3. Remove from local list

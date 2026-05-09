@@ -20,24 +20,24 @@ export async function saveAction({ userId, type, co2, distance, filename, fileTy
     const isStrava = source === 'strava';
     const finalStatus = isStrava ? 'approved' : 'pending';
 
-    // 1. Update Daily Task Progress (Auto-approved for both Strava and manual uploads)
+    // 1. Update Daily Task Progress (ONLY for Strava. Manual uploads wait for verifier)
     let updatedTasks = [...(userData.dailyTasks || [])];
     let xpToAward = 0;
     
-    updatedTasks = updatedTasks.map(task => {
-      if (!task.completed && task.type === type) {
-        task.progress += (distance || 1);
-        if (task.progress >= task.target) {
-          task.progress = task.target;
-          task.completed = true;
-          xpToAward += task.reward; // Grant task completion reward immediately
-        }
-      }
-      return task;
-    });
-
-    // 2. Add action XP if it's Strava
     if (isStrava) {
+      updatedTasks = updatedTasks.map(task => {
+        if (!task.completed && task.type === type) {
+          task.progress += (distance || 1);
+          if (task.progress >= task.target) {
+            task.progress = task.target;
+            task.completed = true;
+            xpToAward += task.reward;
+          }
+        }
+        return task;
+      });
+      
+      // Add action XP for Strava
       xpToAward += co2;
     }
 
