@@ -61,5 +61,17 @@ npm run dev
 - **User**: The default role. Can track activities, complete missions, and compete on the leaderboard.
 - **Verifier/Admin**: Moderators who review uploaded proof. They have a focused UI showing only the Home and Verify tabs.
 
+## 🛠️ Troubleshooting
+
+### Blank Screen / "Invalid API Key" Error on Vercel
+This is usually caused by missing Environment Variables. 
+1. Go to your **Vercel Project Settings** > **Environment Variables**.
+2. Add all the `VITE_FIREBASE_*` keys from your local `.env` file.
+3. Redeploy the project.
+
+### 403 Forbidden / Not Found on Refresh
+If you get a 403 or 404 error when refreshing a sub-page (like `/leaderboard`), ensure the `vercel.json` file is present in the root directory. This file handles client-side routing rewrites for React SPAs.
+
+
 ---
 Built with 🌱 by the Carbon-X Team.
