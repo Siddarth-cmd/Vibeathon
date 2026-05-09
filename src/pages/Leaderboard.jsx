@@ -34,8 +34,8 @@ export default function Leaderboard() {
   const top3 = filtered.slice(0, 3);
   const rest = filtered.slice(3);
 
-  const PODIUM_COLORS = ['#FDE047', '#E5E5E5', '#FB7185'];
-  const PODIUM_ICONS = [<Trophy size={20} />, <Medal size={20} />, <Award size={20} />];
+  const PODIUM_COLORS = ['#FDE047', '#D1D5DB', '#B45309'];
+  const PODIUM_ICONS = ['👑 🥇', '🥈', '🥉'];
 
   return (
     <div style={{ background: '#F5F5F0', minHeight: 'calc(100vh - 64px)', padding: '40px 24px' }}>
@@ -101,7 +101,7 @@ export default function Leaderboard() {
                         borderRadius: '10px 10px 0 0', boxShadow: '4px 4px 0px #000',
                         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>{PODIUM_ICONS[rank - 1]}</div>
+                        <div style={{ fontSize: rank === 1 ? 32 : 24, marginBottom: 4 }}>{PODIUM_ICONS[rank - 1]}</div>
                         <div style={{ fontWeight: 900, fontSize: 22 }}>#{rank}</div>
                         <div style={{ fontWeight: 700, fontSize: 13 }}>{(u.xp || 0).toLocaleString()} XP</div>
                         <div style={{ fontSize: 11, fontWeight: 600, opacity: 0.7 }}>{formatCO2(u.co2Saved || 0)}</div>
@@ -150,7 +150,7 @@ export default function Leaderboard() {
                                 background: i === 0 ? '#FDE047' : i === 1 ? '#E5E5E5' : i === 2 ? '#FB7185' : '#F5F5F0',
                                 border: '2px solid #000', fontWeight: 900, fontSize: 13
                               }}>
-                                #{i + 1}
+                                {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
                               </span>
                             </td>
                             <td style={{ fontWeight: 700 }}>

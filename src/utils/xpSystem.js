@@ -23,6 +23,6 @@ export function getXPToNextLevel(xp) {
 }
 
 export function getLevelBadge(level) {
-  const badges = { 1: '🌱', 2: '🌿', 3: '🏆' };
-  return badges[level] || '🌱';
+  const badges = { 1: '🍃', 2: '🛡️', 3: '💎' };
+  return badges[level] || '🍃';
 }
