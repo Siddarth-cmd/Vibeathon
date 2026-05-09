@@ -71,10 +71,19 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }} className="hidden-mobile">
           {userData && (
             <div style={{ background: '#1a1a1a', border: '2px solid #A3E635', borderRadius: 8, padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 16 }}>{getLevelBadge(userData.level || 1)}</span>
+              {isVerifier ? (
+                <span style={{ fontSize: 16 }}>🛡️</span>
+              ) : (
+                <span style={{ fontSize: 16 }}>{getLevelBadge(userData.level || 1)}</span>
+              )}
               <div>
                 <div style={{ color: '#A3E635', fontWeight: 800, fontSize: 13 }}>{userData.name}</div>
-                <div style={{ color: '#999', fontSize: 11 }}>{userData.xp || 0} XP · {lvl?.label}</div>
+                {!isVerifier && (
+                  <div style={{ color: '#999', fontSize: 11 }}>{userData.xp || 0} XP · {lvl?.label}</div>
+                )}
+                {isVerifier && (
+                  <div style={{ color: '#999', fontSize: 11, textTransform: 'capitalize' }}>{userData.role}</div>
+                )}
               </div>
             </div>
           )}
