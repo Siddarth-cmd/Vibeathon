@@ -55,7 +55,7 @@ export default function Ledger() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
             style={{ display: 'flex', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
             {[
-              { label: 'Total Records', val: actions.length, color: '#A3E635' },
+              { label: 'Total Records', val: actions.filter(a => a.status === 'approved' || a.status === undefined).length, color: '#A3E635' },
               { label: 'Total CO₂', val: formatCO2(userData.co2Saved || 0), color: '#60A5FA' },
               { label: 'Total XP', val: `${userData.xp || 0} XP`, color: '#FDE047' },
             ].map((s, i) => (
@@ -117,9 +117,19 @@ export default function Ledger() {
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <span style={{ background: '#000', color: '#A3E635', border: '2px solid #000', borderRadius: 4, padding: '3px 10px', fontWeight: 800, fontSize: 13, boxShadow: '2px 2px 0px #A3E635' }}>
-                          ✅ VERIFIED
-                        </span>
+                        {a.status === 'rejected' ? (
+                          <span style={{ background: '#000', color: '#FB7185', border: '2px solid #000', borderRadius: 4, padding: '3px 10px', fontWeight: 800, fontSize: 13, boxShadow: '2px 2px 0px #FB7185' }}>
+                            ❌ REJECTED
+                          </span>
+                        ) : a.status === 'pending' ? (
+                          <span style={{ background: '#000', color: '#FDE047', border: '2px solid #000', borderRadius: 4, padding: '3px 10px', fontWeight: 800, fontSize: 13, boxShadow: '2px 2px 0px #FDE047' }}>
+                            ⏳ PENDING
+                          </span>
+                        ) : (
+                          <span style={{ background: '#000', color: '#A3E635', border: '2px solid #000', borderRadius: 4, padding: '3px 10px', fontWeight: 800, fontSize: 13, boxShadow: '2px 2px 0px #A3E635' }}>
+                            ✅ VERIFIED
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -127,7 +137,7 @@ export default function Ledger() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10 }}>
                       {[
                         { label: 'CO₂ Saved', val: formatCO2(a.co2 || 0), color },
-                        { label: 'XP Earned', val: `+${a.co2 || 0} XP`, color: '#FDE047' },
+                        { label: 'XP Earned', val: a.status === 'rejected' ? '0 XP' : `+${a.co2 || 0} XP`, color: '#FDE047' },
                         { label: 'Distance', val: a.distance ? `${a.distance} km` : 'N/A', color: '#E5E5E5' },
                         { label: 'Timestamp', val: ts.toLocaleString(), color: '#F5F5F0', small: true },
                       ].map((f, fi) => (
