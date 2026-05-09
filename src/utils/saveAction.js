@@ -18,13 +18,16 @@ export async function saveAction({ userId, type, co2, distance, filename, fileTy
     }
 
     const isStrava = source === 'strava';
-    const finalStatus = isStrava ? 'approved' : 'pending';
+    const needsVerification = !!imageUrl && !isStrava; // Only photo-based manual uploads need verification
+    const finalStatus = needsVerification ? 'pending' : 'approved';
 
-    // 1. Update Daily Task Progress (ONLY for Strava. Manual uploads wait for verifier)
+    // 1. Update Daily Task Progress + XP
+    // Auto-granted for: Strava activities and non-photo manual activities (cycling, walking, hiking)
+    // Withheld for: photo-based manual uploads (bus, recycling) — granted only on verifier Approval
     let updatedTasks = [...(userData.dailyTasks || [])];
     let xpToAward = 0;
     
-    if (isStrava) {
+    if (!needsVerification) {
       updatedTasks = updatedTasks.map(task => {
         if (!task.completed && task.type === type) {
           task.progress += (distance || 1);
@@ -37,7 +40,7 @@ export async function saveAction({ userId, type, co2, distance, filename, fileTy
         return task;
       });
       
-      // Add action XP for Strava
+      // Add activity XP immediately
       xpToAward += co2;
     }
 
@@ -70,7 +73,7 @@ export async function saveAction({ userId, type, co2, distance, filename, fileTy
       updatePayload.level = newLevel;
     }
     
-    if (isStrava) {
+    if (!needsVerification) {
       updatePayload.co2Saved = increment(co2);
     }
 
