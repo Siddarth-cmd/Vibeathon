@@ -1,16 +1,65 @@
-# React + Vite
+# 🌍 Carbon-X: Campus Carbon Intelligence
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Carbon-X is a gamified sustainability platform designed to track, verify, and reward eco-friendly activities within a campus environment. By turning carbon reduction into a competitive social experience, Carbon-X empowers students and staff to make a measurable impact on the planet.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 🎮 Gamified Missions
+- **Daily Challenges**: Personalised tasks for cycling, walking, hiking, bus travel, and recycling.
+- **Dynamic Scaling**: Mission difficulty and XP rewards increase automatically as users level up.
+- **Progressive Rewards**: Unlock higher tiers and more XP by consistently completing milestones.
 
-## React Compiler
+### 🛡️ Verification System
+- **Proof-Based Logging**: Mandatory image uploads (e.g., bus tickets, recycling photos) for high-impact activities.
+- **Verifier Dashboard**: A dedicated moderation interface for Admins and Verifiers to review, approve, or reject manual uploads.
+- **Anti-Cheat Integration**: Built-in safeguards to ensure only legitimate green activities are rewarded.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🏆 Social & Competitive
+- **Live Leaderboards**: Real-time rankings showing top eco-warriors on campus.
+- **Department Rankings**: Competitive filtering for departments like **CSE, ISE, ECE, ME, CV, and EEE**.
+- **Level Badges**: Interactive badges that evolve as you progress from Level 1 to Eco-Legend.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React 18, Vite, Tailwind CSS (Design System)
+- **Backend**: Firebase (Authentication, Firestore, Storage)
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Deployment**: Vercel
+
+## ⚙️ Setup Instructions
+
+### 1. Prerequisites
+- Node.js (v18+)
+- Firebase Account
+
+### 2. Installation
+```bash
+git clone https://github.com/Siddarth-cmd/Carbon-X.git
+cd Carbon-X
+npm install
+```
+
+### 3. Environment Variables
+Create a `.env` file in the root directory and add your Firebase credentials:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 4. Run Locally
+```bash
+npm run dev
+```
+
+## 👥 Role Guide
+
+- **User**: The default role. Can track activities, complete missions, and compete on the leaderboard.
+- **Verifier/Admin**: Moderators who review uploaded proof. They have a focused UI showing only the Home and Verify tabs.
+
+---
+Built with 🌱 by the Carbon-X Team.
