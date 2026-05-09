@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { CheckCircle, XCircle, Clock, Image as ImageIcon, MapPin } from 'lucide-react';
 
 export default function VerifierDashboard() {
-  const { userData } = useAuth();
+  const { userData, currentUser } = useAuth();
   const [pendingActions, setPendingActions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState(null);
@@ -52,11 +52,14 @@ export default function VerifierDashboard() {
     setProcessingId(action.id);
     try {
       // 1. Update Action Status
+      const verifierId = currentUser?.uid || '';
+      console.log(`[Verifier] Setting action ${action.id} to status: ${status}`);
       await updateDoc(doc(db, 'actions', action.id), {
         status: status,
         verifiedAt: new Date(),
-        verifiedBy: userData.id
+        verifiedBy: verifierId
       });
+      console.log(`[Verifier] Successfully updated action ${action.id} to ${status}`);
 
       // 2. If Approved, award XP, CO2, and update Daily Task progress
       if (status === 'approved') {

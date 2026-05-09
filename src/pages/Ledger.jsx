@@ -20,11 +20,13 @@ export default function Ledger() {
     if (!currentUser) return;
     const q = query(
       collection(db, 'actions'),
-      where('userId', '==', currentUser.uid),
-      orderBy('timestamp', 'desc')
+      where('userId', '==', currentUser.uid)
     );
     const unsub = onSnapshot(q, snap => {
-      setActions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      // Sort manually to avoid needing a composite Firestore index
+      data.sort((a, b) => (b.timestamp?.toMillis?.() || 0) - (a.timestamp?.toMillis?.() || 0));
+      setActions(data);
       setLoading(false);
     });
     return unsub;
