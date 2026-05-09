@@ -173,7 +173,7 @@ export default function Login() {
               <input
                 className="nb-input"
                 type="email"
-                placeholder="you@college.edu"
+                placeholder="you@vvce.ac.in"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
